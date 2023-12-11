@@ -54,9 +54,6 @@ const { sequelize } = models;
 async function bootstrap() {
   try {
     await sequelize.authenticate();
-
-    await runMigrations();
-    log.info("Database connection has been established successfully.");
   } catch (err) {
     log.warn(
       {
@@ -74,9 +71,9 @@ async function bootstrap() {
   app.use(bodyParser.json());
   initAuth(app);
   initRoutes(app);
-  await initGraphql(app, httpServer);
+  await initGraphql(app);
 
-  const port = process.env.PORT;
+  const port = process.env.PORT || 4000;
 
   httpServer.listen(port, () => {
     log.info(`Server running at http://localhost:${port}`);

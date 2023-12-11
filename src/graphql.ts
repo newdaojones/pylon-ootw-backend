@@ -5,10 +5,14 @@ import * as _ from "lodash";
 
 import { Config } from "./config";
 import { Express } from "express";
+import { CheckoutResolver } from "./resolvers/checkout.resolver";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
 import type http from "http";
 import { authMiddlewareForGraphql } from "./middleware/auth";
 import { customAuthChecker } from "./auth/authChecker";
+import path from "path";
+import { UserResolver } from "./resolvers/user.resolver";
+import { CheckoutRequestResolver } from "./resolvers/checkoutRequest.resolver";
 
 const context = ({ req, connection }: { req: any; connection: any }) => {
   if (connection) {
@@ -20,17 +24,9 @@ const context = ({ req, connection }: { req: any; connection: any }) => {
   };
 };
 
-export const initGraphql = async (app: Express, httpServer: http.Server) => {
-  let resolversPattern: NonEmptyArray<string> = [
-    `${__dirname}/resolvers/*.resolver.js`,
-  ];
-
-  if (!Config.isProduction && !Config.isStaging) {
-    resolversPattern = [`${__dirname}/resolvers/*.resolver.ts`];
-  }
-
+export const initGraphql = async (app: Express) => {
   const schema = await buildSchema({
-    resolvers: resolversPattern,
+    resolvers: [UserResolver, CheckoutResolver, CheckoutRequestResolver],
     authChecker: customAuthChecker,
     container: Container,
   });
@@ -38,11 +34,7 @@ export const initGraphql = async (app: Express, httpServer: http.Server) => {
   const server = new ApolloServer({
     schema,
     context,
-    plugins: [
-      // Proper shutdown for the HTTP server.
-      // @ts-ignore
-      ApolloServerPluginDrainHttpServer({ httpServer }),
-    ],
+    plugins: [],
   });
 
   await server.start();

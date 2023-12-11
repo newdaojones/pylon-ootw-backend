@@ -5,6 +5,7 @@ require("dotenv").config();
 
 const sequelizeConfig: SequelizeOptions = require("../sequelize/config");
 import { IDbModels } from "./models";
+import { Config } from "../config";
 
 const sequelize = new Sequelize({
   ...sequelizeConfig,
