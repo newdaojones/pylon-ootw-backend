@@ -22,9 +22,11 @@ import { AssetTransfer } from "../../models/AssetTransfer";
 import { User } from "../../models/User";
 import { normalizeOrder } from "../../utils/convert";
 import { TosStatus } from "../../types/tosStatus.type";
+import { DiscordService } from "../../services/discordService";
 
 const router = express.Router();
 const bridgeService = BridgeService.getInstance();
+const discordService = DiscordService.getInstance();
 
 router.post("/v2/partners", async (req, res) => {
   const data = req.body;
@@ -362,9 +364,15 @@ router.post(
         feeMethod: partner.feeMethod,
         partnerId: partner.id,
       });
+
+      const uri = `${Config.frontendUri}/${checkoutRequest.id}`;
+      await discordService.send(
+        `${partner.companyName} created order trackingId: ${checkoutRequest.id}. payment link: ${uri}`
+      );
+
       res.status(200).json({
         id: checkoutRequest.id,
-        uri: `${Config.frontendUri}/${checkoutRequest.id}`,
+        uri,
       });
     } catch (error) {
       log.warn(

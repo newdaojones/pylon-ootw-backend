@@ -9,6 +9,7 @@ export const Config = {
   isProduction: process.env.NODE_ENV === "production",
   isStaging: process.env.NODE_ENV === "staging",
   subscriptionUri: process.env.SUBSCRIPTION_URI,
+  discordUri: process.env.DISCORD_URI,
   frontendUri:
     process.env.FRONT_END_URI || "https://test.checkout.mybackpack.app",
   defaultFee: {
