@@ -93,8 +93,8 @@ export class CheckoutService {
     const checkout = await Checkout.create({
       ...data,
       userId: user?.id,
-      fee: data.fee || Config.defaultFee.fee,
-      feeType: (data.feeType || Config.defaultFee.feeType) as TipType,
+      fee: data.fee ?? Config.defaultFee.fee,
+      feeType: (data.feeType ?? Config.defaultFee.feeType) as TipType,
     });
 
     const partner = await checkoutRequest?.getPartner();
