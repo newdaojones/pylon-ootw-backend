@@ -41,6 +41,33 @@ export class CheckoutSdkService {
           email: checkout.email,
           name: checkout.fullName,
         },
+        processing: {
+          aft: true,
+        },
+        recipient: {
+          first_name: checkout.firstName,
+          last_name: checkout.lastName,
+          address: {
+            address_line1: checkout.streetAddress,
+            address_line2: checkout.streetAddress2,
+            city: checkout.city,
+            state: checkout.state,
+            postalCode: checkout.postalCode,
+            country: "US",
+          },
+        },
+        sender: {
+          first_name: checkout.firstName,
+          last_name: checkout.lastName,
+          address: {
+            address_line1: checkout.streetAddress,
+            address_line2: checkout.streetAddress2,
+            city: checkout.city,
+            state: checkout.state,
+            postalCode: checkout.postalCode,
+            country: "US",
+          },
+        },
         metadata: {
           value: `Purchase USDC for $${checkout.amount}`,
           checkoutId: checkout.id
