@@ -86,6 +86,7 @@ export class CheckoutSdkService {
         },
         "Failed charge from checkout.com"
       );
+
       throw err;
     }
   }
